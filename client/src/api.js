@@ -20,9 +20,9 @@ export const searchImages = async (searchValue, nextCursor) => {
         params.append('next_cursor', nextCursor);
     }
 
-    const response = await fetch(`${API_URL}.search?${params}`);
+    const response = await fetch(`${API_URL}/search?${params}`);
     const responseJson = await response.json();
 
     return responseJson;
-}
+};
 

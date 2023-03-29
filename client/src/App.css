@@ -27,6 +27,10 @@ form button {
 	padding: 16px;
 }
 
+form button:hover {
+	cursor: pointer;
+}
+
 form button[type='button'] {
 	background-color: rgb(254, 80, 80);
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { getImages } from './api';
+import { getImages, searchImages } from './api';
 
 function App() {
   const [imageList, setImageList] = useState([]);
@@ -23,21 +23,37 @@ function App() {
       ...currentImageList,
       ...responseJson.resources
     ]);
-    setNextCursor(responseJson.next_cursor)
-  }
+    setNextCursor(responseJson.next_cursor);
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+
+    const responseJson = await searchImages(searchValue, nextCursor);
+    setImageList(responseJson.resources);
+    setNextCursor(responseJson.next_cursor);
+  };
+
+  const resetForm = async () => {
+    const responseJson = await getImages();
+    setImageList(responseJson.resources);
+    setNextCursor(responseJson.next_cursor);
+
+    setSearchValue('');
+  };
 
   return (
     <>
-      <form>
+      <form onSubmit={handleFormSubmit}>
         <input
           value={searchValue}
           onChange={(event) => setSearchValue(event.target.value)}
-          required 
+          required='required'
           placeholder='Enter a search value...'
         ></input>
 
         <button type='submit'>Search</button>
-        <button type='button'>Clear</button>
+        <button type='button' onClick={resetForm}>Clear</button>
       </form>
 
       <div className="image-grid">
